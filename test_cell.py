@@ -1,6 +1,9 @@
 import unittest
-from test import Cell, get_neighbour_cells, get_alive_neighbours, get_potential_states
-from test import update, should_living_live, should_dead_live
+from test import Cell
+from test import get_neighbour_cells
+from test import get_alive_neighbours
+from test import get_potential_states
+from test import should_living_live, should_dead_live
 
 
 class TestCell(unittest.TestCase):
@@ -22,7 +25,6 @@ class TestCell(unittest.TestCase):
         )
 
     def test_get_alive_neighbours(self):
-        cell = Cell(0, 0)
         world = (
             Cell(-1, 1),
             Cell(1, -1),
@@ -67,6 +69,4 @@ class TestCell(unittest.TestCase):
         self.assertEqual(should_dead_live(3), True)
 
     def test_update(self):
-        return
-        world = set()
-        self.assertEqual(update(world), [])
+        pass
