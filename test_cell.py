@@ -1,72 +1,45 @@
+#!/usr/bin/env python
+"""Tests for Game of Life.
+"""
 import unittest
-from test import Cell
-from test import get_neighbour_cells
-from test import get_alive_neighbours
-from test import get_potential_states
-from test import should_living_live, should_dead_live
+# TODO put methods etc. in object, and just import that. Also rename 'test.py'
+from test import *
 
 
 class TestCell(unittest.TestCase):
-    def test(self):
-        expected = (
-            Cell(-1, 1),
-            Cell(0, 1),
-            Cell(1, 1),
-            Cell(1, 0),
-            Cell(1, -1),
-            Cell(0, -1),
-            Cell(-1, -1),
-            Cell(-1, -0)
-        )
-        got = get_neighbour_cells(Cell(0, 0))
-        self.assertEqual(
-            got,
-            set(expected)
-        )
 
-    def test_get_alive_neighbours(self):
-        world = (
-            Cell(-1, 1),
-            Cell(1, -1),
-            Cell(0, 2),
-            Cell(0, 0)
-        )
-        expected = set((Cell(-1, 1), Cell(1, -1)))
-        self.assertEqual(
-            get_alive_neighbours(Cell(0, 0), set(world)),
-            expected
-        )
-
-    def test_get_potential_states(self):
-        world = set((Cell(0, 0), Cell(1, 2)))
+    def test_get_neighbour_cells(self):
+        """Test get_neighbour_cells.
+        """
         expected = set((
-            Cell(-1, -1),
-            Cell(0, -1),
-            Cell(1, -1),
-            Cell(-1, 0),
-            Cell(0, 0),
-            Cell(1, 0),
-            Cell(-1, 1),
-            Cell(0, 1),
-            Cell(1, 1),
-            Cell(2, 1),
-            Cell(0, 2),
-            Cell(1, 2),
-            Cell(2, 2),
-            Cell(0, 3),
-            Cell(1, 3),
-            Cell(2, 3),
+            Cell(-1, 1), Cell(0, 1), Cell(1, 1), Cell(1, 0),
+            Cell(1, -1), Cell(0, -1), Cell(-1, -1), Cell(-1, -0)
         ))
-        self.assertEqual(get_potential_states(world), expected)
+        self.assertEqual(get_neighbour_cells(Cell(0, 0)), expected)
 
-    def test_should_living_live(self):
-        self.assertEqual(should_living_live(1), False)
-        self.assertEqual(should_living_live(2), True)
-        self.assertEqual(should_living_live(3), True)
-        self.assertEqual(should_living_live(4), False)
+    def test_get_next_world(self):
+        """Test get_next_world.
+        """
+        world = set((Cell(0, 0), Cell(1, 1), Cell(0, 1)))
+        # TODO check manually...
+        expected = set([Cell(0, 1), Cell(1, 0), Cell(0, 0), Cell(1, 1)])
+        self.assertEqual(get_next_world(world), expected)
 
-    def test_should_dead_live(self):
-        self.assertEqual(should_dead_live(3), True)
+    def test_generator(self):
+        """Test conway generator.
+        """
+        world = set((Cell(0, 0), Cell(1, 1), Cell(0, 1), Cell(1, 2), Cell(1, 0)))
+        x = conway_gol(initial_state=world)
+        # Run for 3 generations
+        for i in xrange(3):
+            print x.next()
+        # TODO check manually...
+        # check 4th generation
+        expected = set([Cell(1, 1), Cell(2, 1)])
+        self.assertEqual(x.next(), expected)
 
-    def test_update(self):
-        pass
+
+if __name__ == '__main__':
+    unittest.main()
+
+
